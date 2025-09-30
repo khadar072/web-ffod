@@ -41,9 +41,9 @@ const Navbar = () => {
                 <Link to='/' >
                     Home
                 </Link>
-                <Link to='/food' >
+                {/* <Link to='/food' >
                     All-Food
-                </Link>
+                </Link> */}
                 <Link to='/contact' >
                     Contact
                 </Link>

@@ -27,7 +27,7 @@ const Products = () => {
           products.map((prod, index) => (
             <div key={index} className='flex flex-col border border-amber-400 rounded p-2'>
               <img
-                src={`http://localhost:5002/upload/${prod.image}`}
+                src={prod.image}
                 alt={prod.name}
                 className="w-full h-44 lg:h-52 object-cover rounded"
               />

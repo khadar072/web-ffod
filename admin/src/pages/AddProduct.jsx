@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addProduct } from '../redux/features/productSlice'
-import { useNavigate } from 'react-router-dom'
 const AddProduct = () => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -9,7 +8,6 @@ const AddProduct = () => {
   const [category, setCategory] = useState('')
   const [image, setImage] = useState(null)
   const dispetch = useDispatch()
-  const navigate = useNavigate()
 
 
   const handleSubmit = (e) => {
@@ -23,12 +21,6 @@ const AddProduct = () => {
     formdata.append('image', image)
     e.preventDefault()
     dispetch(addProduct(formdata))
-    setName('');
-    setPrice('');
-    setDescription('');
-    setCategory('');
-    setImage(null);
-    navigate('/product')
   }
 
   const handleImageChange = (e) => {

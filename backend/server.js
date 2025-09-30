@@ -4,7 +4,7 @@
 import { connectDB } from './config/db.js'
 import admintRouter from './router/adminRouter.js'
 import userRouter from './router/userRouter.js'
-// import connectCloudinary from './config/cloudinary.js'
+import connectCloudinary from './config/cloudinary.js'
 
  const app = express()
 
@@ -22,10 +22,8 @@ import userRouter from './router/userRouter.js'
  app.use('/admin/api',admintRouter)
  app.use('/user/api',userRouter)
  app.use("/upload", express.static("upload"));
- // Cloudinary
-// connectCloudinary();
 
-
+connectCloudinary()
  connectDB()
 const PORT =process.env.PORT || 5002
  app.listen(PORT,()=>{

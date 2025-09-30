@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
+import { v2 as cloudinary } from 'cloudinary';
 import Food from '../models/foodSchema.js';
-import cloudinary from '../config/cloudinary.js';
 
 export const adminLogin = async (req , res) =>{
     try {
@@ -18,77 +18,90 @@ export const adminLogin = async (req , res) =>{
    }
 }
 
-
-
-
-// helper for uploading to Cloudinary
-const uploadToCloudinary = (fileBuffer, folder = 'products') =>
-  new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream({ folder }, (error, result) => {
-      if (error) reject(error);
-      else resolve(result);
-    });
-    stream.end(fileBuffer);
-  });
-
 export const addProduct = async (req, res) => {
   try {
     const { name, description, price, category } = req.body;
     const image = req.file;
 
     if (!name || !description || !price || !category || !image) {
-      return res.status(400).json({ success: false, message: "All product details are required" });
+      return res.status(400).json({
+        success: false,
+        message: "All product details are required",
+      });
     }
 
-    const uploadResult = await uploadToCloudinary(image.buffer, 'products');
+      // Upload image to Cloudinary
+    let imageUrl = null;
+    if (image) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "doctors" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+      imageUrl = uploadResult.secure_url;
+    }
+
+    if (!imageUrl) {
+      return res.status(500).json({ success: false, message: "Image upload failed" });
+    }
 
     const newProduct = new Food({
       name,
-      description,
+      description,           // make sure this matches your schema
       price,
       category,
-      image: uploadResult.secure_url,
+      image: imageUrl // save only the filename as string
     });
 
     await newProduct.save();
 
-    res.status(201).json({ success: true, message: "Product created successfully", product: newProduct });
+    return res.status(201).json({
+      success: true,
+      message: "Product created successfully",
+      product: newProduct,
+    });
   } catch (error) {
-    console.error('AddProduct Error:', error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
+
 
 export const updateProducts = async (req, res) => {
   try {
-    const { id } = req.params;
     const { name, description, price, category } = req.body;
-    const image = req.file;
+    const { id } = req.params;
 
     const product = await Food.findById(id);
-    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
-
-    // only upload new image if provided
-    if (image) {
-      const uploadResult = await uploadToCloudinary(image.buffer, 'products');
-      product.image = uploadResult.secure_url;
+    if (!product) {
+      return res.send({ success: false, message: "Product not found" });
     }
 
-    // update fields if provided
-    if (name) product.name = name;
-    if (description) product.description = description;
-    if (price) product.price = price;
-    if (category) product.category = category;
+    product.name = name;
+    product.description = description;
+    product.price = price;
+    product.category = category;
 
-    const updatedProduct = await product.save();
+    if (req.file) {
+      product.image = req.file.filename;
+    }
 
-    res.status(200).json({ success: true, message: "Product updated successfully", product: updatedProduct });
+    const updatedproduct = await product.save();
+
+    return res.send({ success: true, message: "Product updated", updatedproduct });
   } catch (error) {
-    console.error('UpdateProduct Error:', error);
-    res.status(500).json({ success: false, message: error.message });
+    console.log(error);
+    res.send({ success: false, message: error.message });
   }
 };
-
 
 
 export const getProducts = async (req,res) => {
