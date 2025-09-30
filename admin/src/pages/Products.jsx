@@ -3,19 +3,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteProduct, getProducts } from '../redux/features/productSlice'
 import { MdDeleteOutline } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 const Products = () => {
   const { data: products = [], status, error } = useSelector(state => state.products)
   const dispatch = useDispatch()
 
   useEffect(() => {
+    if (status === 'idle') {
+      dispatch(getProducts())
+    }
+  }, [status, dispatch])
 
-    dispatch(getProducts())
-
-  }, [dispatch])
-
-  const handleDelete = (id) => {
+  const handleDelete = (id)=>{
     dispatch(deleteProduct(id))
   }
 
@@ -41,7 +41,7 @@ const Products = () => {
                   <p className='text-2xl font-semibold'>${prod.price}</p>
                   <div className='flex gap-3 items-center'>
                     <Link to={`/update/${prod._id}`}><CiEdit size={25} className='text-amber-400 cursor-pointer' /></Link>
-                    <MdDeleteOutline onClick={() => handleDelete(prod._id)} size={25} className='text-amber-400 cursor-pointer' />
+                    <MdDeleteOutline onClick={()=>handleDelete(prod._id)} size={25} className='text-amber-400 cursor-pointer' />
                   </div>
                 </div>
               </div>
