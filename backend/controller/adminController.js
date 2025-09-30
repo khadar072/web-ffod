@@ -20,7 +20,7 @@ export const adminLogin = async (req , res) =>{
 export const addProduct = async (req, res) => {
   try {
     const { name, description, price, category } = req.body;
-    const image = req.file;
+     const image = req.file;
 
     if (!name || !description || !price || !category || !image) {
       return res.status(400).json({
@@ -29,12 +29,32 @@ export const addProduct = async (req, res) => {
       });
     }
 
+   // Upload image to Cloudinary
+    let imageUrl = null;
+    if (image) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "doctors" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+      imageUrl = uploadResult.secure_url;
+    }
+
+    if (!imageUrl) {
+      return res.status(500).json({ success: false, message: "Image upload failed" });
+    }
+
     const newProduct = new Food({
       name,
       description,           // make sure this matches your schema
       price,
       category,
-      image: image.filename, // save only the filename as string
+      image: imageUrl, // save only the filename as string
     });
 
     await newProduct.save();
@@ -57,6 +77,7 @@ export const addProduct = async (req, res) => {
 export const updateProducts = async (req, res) => {
   try {
     const { name, description, price, category } = req.body;
+     const image = req.file;
     const { id } = req.params;
 
     const product = await Food.findById(id);
@@ -64,14 +85,33 @@ export const updateProducts = async (req, res) => {
       return res.send({ success: false, message: "Product not found" });
     }
 
+       // Upload image to Cloudinary
+    let imageUrl = null;
+    if (image) {
+      const uploadResult = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "doctors" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        stream.end(req.file.buffer);
+      });
+      imageUrl = uploadResult.secure_url;
+    }
+
+    if (!imageUrl) {
+      return res.status(500).json({ success: false, message: "Image upload failed" });
+    }
+
     product.name = name;
     product.description = description;
     product.price = price;
     product.category = category;
+    product.image = imageUrl;
 
-    if (req.file) {
-      product.image = req.file.filename;
-    }
+   
 
     const updatedproduct = await product.save();
 
