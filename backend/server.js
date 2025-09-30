@@ -2,7 +2,7 @@
  import 'dotenv/config'
  import cors from 'cors'
 import { connectDB } from './config/db.js'
-import admintRouter from './router/productRouter.js'
+import admintRouter from './router/adminRouter.js'
 import userRouter from './router/userRouter.js'
 
  const app = express()

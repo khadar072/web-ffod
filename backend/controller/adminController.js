@@ -54,35 +54,34 @@ export const addProduct = async (req, res) => {
 };
 
 
-export const updateProducts = async (req,res) => {
-    try {
-        const { name, description, price, category } = req.body;
-        const image = req.file;
-        const {id}= req.params
+export const updateProducts = async (req, res) => {
+  try {
+    const { name, description, price, category } = req.body;
+    const { id } = req.params;
 
-
-        const product =await Food.findById(id)
-
-        if (!product) {
-            return res.send({success: false,message: "there isno this product"})
-        }
-
-        product.name=name,
-        product.description=description,
-        product.price=price,
-        product.category=category,
-        product.image=image.filename
-
-        const updatedproduct=await product.save()
-
-        return res.send({success: true,message: "product updated",updatedproduct})
-
-    } catch (error) {
-        console.log(error);
-        res.send({success:false,message:error.message})
-        
+    const product = await Food.findById(id);
+    if (!product) {
+      return res.send({ success: false, message: "Product not found" });
     }
-}
+
+    product.name = name;
+    product.description = description;
+    product.price = price;
+    product.category = category;
+
+    if (req.file) {
+      product.image = req.file.filename;
+    }
+
+    const updatedproduct = await product.save();
+
+    return res.send({ success: true, message: "Product updated", updatedproduct });
+  } catch (error) {
+    console.log(error);
+    res.send({ success: false, message: error.message });
+  }
+};
+
 
 export const getProducts = async (req,res) => {
     try {
@@ -132,3 +131,4 @@ export const deleteProducts = async (req,res) => {
         
     }
 }
+

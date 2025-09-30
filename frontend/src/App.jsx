@@ -9,6 +9,8 @@ import Contact from './pages/Contact'
 import MyOrder from './pages/MyOrder'
 import Footer from './component/Footer'
 import Register from './pages/Register'
+import Cart from './pages/Cart'
+import Checkout from './pages/Checkout'
 const App = () => {
   return (
     <div className=''>
@@ -24,6 +26,8 @@ const App = () => {
           <Route path='/food' element={<Food />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/my-order' element={<MyOrder />} />
+          <Route path='/cart' element={<Cart />} />
+          <Route path='/checkout' element={<Checkout />} />
         </Routes>
       </div>
       <Footer/>

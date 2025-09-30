@@ -5,13 +5,18 @@ import { RiCloseFill } from "react-icons/ri";
 import { MdLightMode } from "react-icons/md";
 import { IoIosLogOut } from "react-icons/io";
 import { MdDarkMode } from "react-icons/md";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { FaCartArrowDown } from "react-icons/fa";
 import { logout } from '../redux/features/userSlice';
 const Navbar = () => {
     const token = localStorage.getItem('token')
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false) 
     const [dark, setDark] = useState(false)
     const dispatch = useDispatch();
+    const cartCount = useSelector(state =>
+        state.cart.cart.reduce((total, item) => total + item.quantity, 0)
+    )
+
 
 
     const handleLogout = (e) => {
@@ -47,6 +52,19 @@ const Navbar = () => {
                         My-Order
                     </Link>
                 }
+                <div className='flex flex-row relative items-center justify-center '>
+                    <Link to='/cart'><FaCartArrowDown size={25} className='text-amber-400 ' />
+                        {cartCount == 0 ?
+                            <p className='rounded-full text-white bg-red-500 px-2 text-sm absolute -top-3 -right-3'>
+                                0
+                            </p>
+                            : (
+                                <p className='rounded-full text-white bg-red-500 px-2 text-sm absolute -top-3 -right-3'>
+                                    {cartCount}
+                                </p>
+                            )}
+                    </Link>
+                </div>
                 <div className='flex flex-row gap-4'>
                     {
                         token ? <IoIosLogOut size={30} onClick={handleLogout} className='ml-10 text-amber-400' />

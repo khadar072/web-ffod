@@ -13,7 +13,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   const resultAction = await dispatch(adminLogin({ email, password }));
   if (resultAction.payload?.atoken) {
-    navigate('/');
+    navigate('/add-items');
   } else {
     alert('Login failed');
   }

@@ -23,8 +23,8 @@ const App = () => {
           <div className='pt-[80px]'>
             <Sidebar />
             <Routes>
-              <Route path='/' element={<Dashboard />} />
-              <Route path='/add' element={<AddProduct />} />
+              {/* <Route path='/' element={<Dashboard />} /> */}
+              <Route path='/add-items' element={<AddProduct />} />
               <Route path='/product' element={<Products />} />
               <Route path='/update/:id' element={<Update />} />
               <Route path='/order' element={<Orders />} />

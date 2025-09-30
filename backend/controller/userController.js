@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import User from '../models/userSchema.js';
 import jwt from 'jsonwebtoken';
 import Food from '../models/foodSchema.js';
+import Order from '../models/orderSchema.js';
 
 
 export const userRegister = async (req, res) => {
@@ -71,11 +72,9 @@ export const getFood = async (req,res)=>{
   }
 }
 
-export const getFood8 = async (req,res)=>{
-  try {
-    
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-    
-  }
-}
+
+
+
+
+
+
