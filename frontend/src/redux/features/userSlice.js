@@ -14,6 +14,7 @@ export const userRegister = createAsyncThunk('user/register', async (newUser) =>
   const res = await axios.post(`${API_URL}/user/api/user-register`, newUser);
   return res.data;
 });
+
 export const checkout = createAsyncThunk('user/checkout', async (newUser) => {
   const res = await axios.post(`${API_URL}/user/api/checkout`, newUser);
   return res.data;

@@ -7,7 +7,7 @@ const Checkout = () => {
   const { cart: items } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = localStorage.getItem("atoken");
+  const token = localStorage.getItem("token");
 
   const [form, setForm] = useState({
     name: "",

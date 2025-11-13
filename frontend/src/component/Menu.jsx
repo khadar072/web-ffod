@@ -10,19 +10,19 @@ const Menu = () => {
                     breakfast
             </div>
             <div className='h-20 rounded flex items-center shadow shadow-amber-400 justify-center   flex-1'>
-                    breakfast
+                    Lunch
             </div>
             <div className='h-20 rounded flex items-center shadow shadow-amber-400 justify-center   flex-1'>
-                    breakfast
+                    Dinner
             </div>
             <div className='h-20 rounded flex items-center shadow shadow-amber-400 justify-center   flex-1'>
-                    breakfast
+                    Soft Drink
             </div>
             <div className='h-20 rounded flex items-center shadow shadow-amber-400 justify-center   flex-1'>
-                    breakfast
+                    Sweets
             </div>
             <div className='h-20 rounded flex items-center shadow shadow-amber-400 justify-center   flex-1'>
-                    breakfast
+                    Ceck
             </div>
         </div>
     </div>

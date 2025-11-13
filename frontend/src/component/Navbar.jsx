@@ -10,7 +10,7 @@ import { FaCartArrowDown } from "react-icons/fa";
 import { logout } from '../redux/features/userSlice';
 const Navbar = () => {
     const token = localStorage.getItem('token')
-    const [open, setOpen] = useState(false) 
+    const [open, setOpen] = useState(false)
     const [dark, setDark] = useState(false)
     const dispatch = useDispatch();
     const cartCount = useSelector(state =>
@@ -41,9 +41,7 @@ const Navbar = () => {
                 <Link to='/' >
                     Home
                 </Link>
-                {/* <Link to='/food' >
-                    All-Food
-                </Link> */}
+
                 <Link to='/contact' >
                     Contact
                 </Link>
@@ -73,18 +71,34 @@ const Navbar = () => {
                     }
                 </div>
             </div>
-            {
-                open ?
-                    <RiCloseFill onClick={() => setOpen(!open)} size={40} className='text-amber-400 flex md:hidden cursor-pointer' />
-                    : <HiOutlineMenuAlt3 onClick={() => setOpen(!open)} size={40} className='text-amber-400 flex md:hidden cursor-pointer' />
-            }
+
+            <div className='flex  md:hidden gap-6 items-center justify-center'>
+                <div className='flex flex-row relative md:hidden items-center justify-center '>
+
+                    <Link to='/cart'><FaCartArrowDown size={25} className='text-amber-400 ' />
+                        {cartCount == 0 ?
+                            <p className='rounded-full text-white bg-red-500 px-2 text-sm absolute -top-3 -right-3'>
+                                0
+                            </p>
+                            : (
+                                <p className='rounded-full text-white bg-red-500 px-2 text-sm absolute -top-3 -right-3'>
+                                    {cartCount}
+                                </p>
+                            )}
+                    </Link>
+
+                </div>
+                {
+                    open ?
+                        <RiCloseFill onClick={() => setOpen(!open)} size={40} className='text-amber-400 flex md:hidden cursor-pointer' />
+                        : <HiOutlineMenuAlt3 onClick={() => setOpen(!open)} size={40} className='text-amber-400 flex md:hidden cursor-pointer' />
+                }
+
+            </div>
 
             <div className={`w-[300px] mt-[106px] pt-8 pl-6 border border-amber-400 flex flex-col gap-4 md:hidden bg-white fixed top-0 left-0 h-full  transform transition-transform duration-500 ${open ? "translate-x-0" : "-translate-x-full"} `}>
                 <Link onClick={() => setOpen(!open)} to='/' >
                     Home
-                </Link>
-                <Link onClick={() => setOpen(!open)} to='/food' >
-                    All-Food
                 </Link>
                 <Link onClick={() => setOpen(!open)} to='/contact' >
                     Contact

@@ -30,7 +30,7 @@ const Cart = () => {
               >
                 {i.image && (
                   <img
-                    src={`http://localhost:5002/upload/${i.image}`}
+                    src={i.image}
                     alt={i.name}
                     className="w-28 h-28  object-cover rounded-lg"
                   />
